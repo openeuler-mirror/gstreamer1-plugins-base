@@ -1,4 +1,5 @@
 %global         majorminor      1.0
+%global         gst_mm          gstreamer-%{majorminor}
 
 Name:            gstreamer1-plugins-base
 Version:         1.14.4
@@ -21,17 +22,16 @@ Requires:       iso-codes
 Conflicts: gstreamer1-plugins-bad-free < 1.13
 
 %description
-GStreamer Base Plug-ins is a well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer. It also contains helper libraries and base classes useful for writing elements. A wide range of video and audio decoders, encoders, and filters are included.
+GStreamer is a graphics library for built-in media processing components. BasePlug-ins is a the collections used to maintain the GStreamer plugin.
 
 %package devel
 Summary:        GStreamer Base Plugins Development files
-Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       %{name} = %{version}-%{release}
 Provides:       tools
 Obsoletes:      tools
 
 %description devel
-The %{name}-devel package contains libraries and header files
-for developing applications that use %{name}.
+This package contains static libraries and header files.
 
 %package help
 Summary:        Developer documentation for GStreamer Base plugins library
@@ -41,8 +41,7 @@ Provides:       devel-docs
 Obsoletes:      devel-docs
 
 %description help
-This %{name}-help package contains developer documentation
-for the GStreamer Base Plugins library.
+This package provides manual for developpers.
 
 %prep
 %setup -q -n gst-plugins-base-%{version}
@@ -131,183 +130,39 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_libdir}/girepository-1.0/GstVideo-%{majorminor}.typelib
 
 # base plugins without external dependencies
-%{_libdir}/gstreamer-%{majorminor}/libgstadder.so
-%{_libdir}/gstreamer-%{majorminor}/libgstapp.so
-%{_libdir}/gstreamer-%{majorminor}/libgstaudioconvert.so
-%{_libdir}/gstreamer-%{majorminor}/libgstaudiomixer.so
-%{_libdir}/gstreamer-%{majorminor}/libgstaudiorate.so
-%{_libdir}/gstreamer-%{majorminor}/libgstaudioresample.so
-%{_libdir}/gstreamer-%{majorminor}/libgstaudiotestsrc.so
-%{_libdir}/gstreamer-%{majorminor}/libgstencoding.so
-%{_libdir}/gstreamer-%{majorminor}/libgstgio.so
-%{_libdir}/gstreamer-%{majorminor}/libgstplayback.so
-%{_libdir}/gstreamer-%{majorminor}/libgstpbtypes.so
-%{_libdir}/gstreamer-%{majorminor}/libgstrawparse.so
-%{_libdir}/gstreamer-%{majorminor}/libgstsubparse.so
-%{_libdir}/gstreamer-%{majorminor}/libgsttcp.so
-%{_libdir}/gstreamer-%{majorminor}/libgsttypefindfunctions.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvideoconvert.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvideorate.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvideoscale.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvideotestsrc.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvolume.so
+%{_libdir}/%{gst_mm}/libgstadder.so
+%{_libdir}/%{gst_mm}/libgstapp.so
+%{_libdir}/%{gst_mm}/libgstaudioconvert.so
+%{_libdir}/%{gst_mm}/libgstaudiomixer.so
+%{_libdir}/%{gst_mm}/libgstaudiorate.so
+%{_libdir}/%{gst_mm}/libgstaudioresample.so
+%{_libdir}/%{gst_mm}/libgstaudiotestsrc.so
+%{_libdir}/%{gst_mm}/libgstencoding.so
+%{_libdir}/%{gst_mm}/libgstgio.so
+%{_libdir}/%{gst_mm}/libgstplayback.so
+%{_libdir}/%{gst_mm}/libgstpbtypes.so
+%{_libdir}/%{gst_mm}/libgstrawparse.so
+%{_libdir}/%{gst_mm}/libgstsubparse.so
+%{_libdir}/%{gst_mm}/libgsttcp.so
+%{_libdir}/%{gst_mm}/libgsttypefindfunctions.so
+%{_libdir}/%{gst_mm}/libgstvideoconvert.so
+%{_libdir}/%{gst_mm}/libgstvideorate.so
+%{_libdir}/%{gst_mm}/libgstvideoscale.so
+%{_libdir}/%{gst_mm}/libgstvideotestsrc.so
+%{_libdir}/%{gst_mm}/libgstvolume.so
 
 # base plugins with dependencies
-%{_libdir}/gstreamer-%{majorminor}/libgstalsa.so
-%{_libdir}/gstreamer-%{majorminor}/libgstcdparanoia.so
-%{_libdir}/gstreamer-%{majorminor}/libgstopengl.so
-%{_libdir}/gstreamer-%{majorminor}/libgstlibvisual.so
-%{_libdir}/gstreamer-%{majorminor}/libgstogg.so
-%{_libdir}/gstreamer-%{majorminor}/libgstopus.so
-%{_libdir}/gstreamer-%{majorminor}/libgstpango.so
-%{_libdir}/gstreamer-%{majorminor}/libgsttheora.so
-%{_libdir}/gstreamer-%{majorminor}/libgstvorbis.so
-%{_libdir}/gstreamer-%{majorminor}/libgstximagesink.so
-%{_libdir}/gstreamer-%{majorminor}/libgstxvimagesink.so
-
-
-%files devel
-%{_bindir}/gst-discoverer-%{majorminor}
-%{_bindir}/gst-play-%{majorminor}
-%{_bindir}/gst-device-monitor-%{majorminor}
-
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/allocators
-%{_includedir}/gstreamer-%{majorminor}/gst/allocators/allocators.h
-%{_includedir}/gstreamer-%{majorminor}/gst/allocators/allocators-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/allocators/gstdmabuf.h
-%{_includedir}/gstreamer-%{majorminor}/gst/allocators/gstfdmemory.h
-%{_includedir}/gstreamer-%{majorminor}/gst/allocators/gstphysmemory.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/app
-%{_includedir}/gstreamer-%{majorminor}/gst/app/app.h
-%{_includedir}/gstreamer-%{majorminor}/gst/app/app-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/app/app-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/app/gstappsink.h
-%{_includedir}/gstreamer-%{majorminor}/gst/app/gstappsrc.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/audio
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-channels.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-channel-mixer.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-converter.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-format.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-info.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-quantize.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-resampler.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/audio-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudioaggregator.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiobasesink.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiobasesrc.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiocdsrc.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudioclock.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiodecoder.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudioencoder.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiofilter.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudioiec61937.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiometa.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudioringbuffer.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiosink.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiosrc.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/gstaudiostreamalign.h
-%{_includedir}/gstreamer-%{majorminor}/gst/audio/streamvolume.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/fft
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/fft.h
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/fft-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/gstfft.h
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/gstfftf32.h
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/gstfftf64.h
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/gstffts16.h
-%{_includedir}/gstreamer-%{majorminor}/gst/fft/gstffts32.h
-%{_includedir}/gstreamer-%{majorminor}/gst/gl/
-%{_libdir}/gstreamer-%{majorminor}/include/gst/gl/
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/pbutils
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/codec-utils.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/descriptions.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/encoding-profile.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/encoding-target.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/gstaudiovisualizer.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/gstdiscoverer.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/gstpluginsbaseversion.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/install-plugins.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/missing-plugins.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/pbutils-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/pbutils.h
-%{_includedir}/gstreamer-%{majorminor}/gst/pbutils/pbutils-prelude.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/riff
-%{_includedir}/gstreamer-%{majorminor}/gst/riff/riff.h
-%{_includedir}/gstreamer-%{majorminor}/gst/riff/riff-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/riff/riff-ids.h
-%{_includedir}/gstreamer-%{majorminor}/gst/riff/riff-media.h
-%{_includedir}/gstreamer-%{majorminor}/gst/riff/riff-read.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/rtp
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtcpbuffer.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtpbaseaudiopayload.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtpbasedepayload.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtpbasepayload.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtpbuffer.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtpdefs.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtp-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtphdrext.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/gstrtppayloads.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/rtp.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtp/rtp-prelude.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/rtsp
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtsp.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtsp-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtspconnection.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtspdefs.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtspextension.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtspmessage.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtsprange.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtsptransport.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/gstrtspurl.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/rtsp.h
-%{_includedir}/gstreamer-%{majorminor}/gst/rtsp/rtsp-prelude.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/sdp
-%{_includedir}/gstreamer-%{majorminor}/gst/sdp/gstsdp.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sdp/gstsdpmessage.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sdp/gstmikey.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sdp/sdp.h
-%{_includedir}/gstreamer-%{majorminor}/gst/sdp/sdp-prelude.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/tag
-%{_includedir}/gstreamer-%{majorminor}/gst/tag/gsttagdemux.h
-%{_includedir}/gstreamer-%{majorminor}/gst/tag/gsttagmux.h
-%{_includedir}/gstreamer-%{majorminor}/gst/tag/tag.h
-%{_includedir}/gstreamer-%{majorminor}/gst/tag/tag-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/tag/tag-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/tag/xmpwriter.h
-%dir %{_includedir}/gstreamer-%{majorminor}/gst/video
-%{_includedir}/gstreamer-%{majorminor}/gst/video/colorbalance.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/colorbalancechannel.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideoaffinetransformationmeta.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideodecoder.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideoencoder.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideofilter.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideometa.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideopool.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideosink.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideotimecode.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/gstvideoutils.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/navigation.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-blend.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-overlay-composition.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-chroma.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-color.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-converter.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-dither.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-enumtypes.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-event.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-format.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-frame.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-info.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-multiview.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-resampler.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-scaler.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-tile.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/video-prelude.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/videodirection.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/videoorientation.h
-%{_includedir}/gstreamer-%{majorminor}/gst/video/videooverlay.h
+%{_libdir}/%{gst_mm}/libgstalsa.so
+%{_libdir}/%{gst_mm}/libgstcdparanoia.so
+%{_libdir}/%{gst_mm}/libgstopengl.so
+%{_libdir}/%{gst_mm}/libgstlibvisual.so
+%{_libdir}/%{gst_mm}/libgstogg.so
+%{_libdir}/%{gst_mm}/libgstopus.so
+%{_libdir}/%{gst_mm}/libgstpango.so
+%{_libdir}/%{gst_mm}/libgsttheora.so
+%{_libdir}/%{gst_mm}/libgstvorbis.so
+%{_libdir}/%{gst_mm}/libgstximagesink.so
+%{_libdir}/%{gst_mm}/libgstxvimagesink.so
 
 %{_libdir}/libgstallocators-%{majorminor}.so
 %{_libdir}/libgstaudio-%{majorminor}.so
@@ -321,6 +176,150 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_libdir}/libgstfft-%{majorminor}.so
 %{_libdir}/libgstapp-%{majorminor}.so
 %{_libdir}/libgstgl-%{majorminor}.so
+
+
+%files devel
+%{_bindir}/gst-discoverer-%{majorminor}
+%{_bindir}/gst-play-%{majorminor}
+%{_bindir}/gst-device-monitor-%{majorminor}
+
+%dir %{_includedir}/%{gst_mm}/gst/allocators
+%{_includedir}/%{gst_mm}/gst/allocators/allocators.h
+%{_includedir}/%{gst_mm}/gst/allocators/allocators-prelude.h
+%{_includedir}/%{gst_mm}/gst/allocators/gstdmabuf.h
+%{_includedir}/%{gst_mm}/gst/allocators/gstfdmemory.h
+%{_includedir}/%{gst_mm}/gst/allocators/gstphysmemory.h
+%dir %{_includedir}/%{gst_mm}/gst/app
+%{_includedir}/%{gst_mm}/gst/app/app.h
+%{_includedir}/%{gst_mm}/gst/app/app-prelude.h
+%{_includedir}/%{gst_mm}/gst/app/app-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/app/gstappsink.h
+%{_includedir}/%{gst_mm}/gst/app/gstappsrc.h
+%dir %{_includedir}/%{gst_mm}/gst/audio
+%{_includedir}/%{gst_mm}/gst/audio/audio-channels.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-channel-mixer.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-converter.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-format.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-info.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-quantize.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-resampler.h
+%{_includedir}/%{gst_mm}/gst/audio/audio.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-prelude.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudioaggregator.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiobasesink.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiobasesrc.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiocdsrc.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudioclock.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiodecoder.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudioencoder.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiofilter.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudioiec61937.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiometa.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudioringbuffer.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiosink.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiosrc.h
+%{_includedir}/%{gst_mm}/gst/audio/gstaudiostreamalign.h
+%{_includedir}/%{gst_mm}/gst/audio/streamvolume.h
+%dir %{_includedir}/%{gst_mm}/gst/fft
+%{_includedir}/%{gst_mm}/gst/fft/fft.h
+%{_includedir}/%{gst_mm}/gst/fft/fft-prelude.h
+%{_includedir}/%{gst_mm}/gst/fft/gstfft.h
+%{_includedir}/%{gst_mm}/gst/fft/gstfftf32.h
+%{_includedir}/%{gst_mm}/gst/fft/gstfftf64.h
+%{_includedir}/%{gst_mm}/gst/fft/gstffts16.h
+%{_includedir}/%{gst_mm}/gst/fft/gstffts32.h
+%{_includedir}/%{gst_mm}/gst/gl/
+%{_libdir}/%{gst_mm}/include/gst/gl/
+%dir %{_includedir}/%{gst_mm}/gst/pbutils
+%{_includedir}/%{gst_mm}/gst/pbutils/codec-utils.h
+%{_includedir}/%{gst_mm}/gst/pbutils/descriptions.h
+%{_includedir}/%{gst_mm}/gst/pbutils/encoding-profile.h
+%{_includedir}/%{gst_mm}/gst/pbutils/encoding-target.h
+%{_includedir}/%{gst_mm}/gst/pbutils/gstaudiovisualizer.h
+%{_includedir}/%{gst_mm}/gst/pbutils/gstdiscoverer.h
+%{_includedir}/%{gst_mm}/gst/pbutils/gstpluginsbaseversion.h
+%{_includedir}/%{gst_mm}/gst/pbutils/install-plugins.h
+%{_includedir}/%{gst_mm}/gst/pbutils/missing-plugins.h
+%{_includedir}/%{gst_mm}/gst/pbutils/pbutils-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/pbutils/pbutils.h
+%{_includedir}/%{gst_mm}/gst/pbutils/pbutils-prelude.h
+%dir %{_includedir}/%{gst_mm}/gst/riff
+%{_includedir}/%{gst_mm}/gst/riff/riff.h
+%{_includedir}/%{gst_mm}/gst/riff/riff-prelude.h
+%{_includedir}/%{gst_mm}/gst/riff/riff-ids.h
+%{_includedir}/%{gst_mm}/gst/riff/riff-media.h
+%{_includedir}/%{gst_mm}/gst/riff/riff-read.h
+%dir %{_includedir}/%{gst_mm}/gst/rtp
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtcpbuffer.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtpbaseaudiopayload.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtpbasedepayload.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtpbasepayload.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtpbuffer.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtpdefs.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtp-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtphdrext.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtppayloads.h
+%{_includedir}/%{gst_mm}/gst/rtp/rtp.h
+%{_includedir}/%{gst_mm}/gst/rtp/rtp-prelude.h
+%dir %{_includedir}/%{gst_mm}/gst/rtsp
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtsp.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtsp-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtspconnection.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtspdefs.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtspextension.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtspmessage.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtsprange.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtsptransport.h
+%{_includedir}/%{gst_mm}/gst/rtsp/gstrtspurl.h
+%{_includedir}/%{gst_mm}/gst/rtsp/rtsp.h
+%{_includedir}/%{gst_mm}/gst/rtsp/rtsp-prelude.h
+%dir %{_includedir}/%{gst_mm}/gst/sdp
+%{_includedir}/%{gst_mm}/gst/sdp/gstsdp.h
+%{_includedir}/%{gst_mm}/gst/sdp/gstsdpmessage.h
+%{_includedir}/%{gst_mm}/gst/sdp/gstmikey.h
+%{_includedir}/%{gst_mm}/gst/sdp/sdp.h
+%{_includedir}/%{gst_mm}/gst/sdp/sdp-prelude.h
+%dir %{_includedir}/%{gst_mm}/gst/tag
+%{_includedir}/%{gst_mm}/gst/tag/gsttagdemux.h
+%{_includedir}/%{gst_mm}/gst/tag/gsttagmux.h
+%{_includedir}/%{gst_mm}/gst/tag/tag.h
+%{_includedir}/%{gst_mm}/gst/tag/tag-prelude.h
+%{_includedir}/%{gst_mm}/gst/tag/tag-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/tag/xmpwriter.h
+%dir %{_includedir}/%{gst_mm}/gst/video
+%{_includedir}/%{gst_mm}/gst/video/colorbalance.h
+%{_includedir}/%{gst_mm}/gst/video/colorbalancechannel.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideoaffinetransformationmeta.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideodecoder.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideoencoder.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideofilter.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideometa.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideopool.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideosink.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideotimecode.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideoutils.h
+%{_includedir}/%{gst_mm}/gst/video/navigation.h
+%{_includedir}/%{gst_mm}/gst/video/video-blend.h
+%{_includedir}/%{gst_mm}/gst/video/video-overlay-composition.h
+%{_includedir}/%{gst_mm}/gst/video/video-chroma.h
+%{_includedir}/%{gst_mm}/gst/video/video-color.h
+%{_includedir}/%{gst_mm}/gst/video/video-converter.h
+%{_includedir}/%{gst_mm}/gst/video/video-dither.h
+%{_includedir}/%{gst_mm}/gst/video/video-enumtypes.h
+%{_includedir}/%{gst_mm}/gst/video/video-event.h
+%{_includedir}/%{gst_mm}/gst/video/video-format.h
+%{_includedir}/%{gst_mm}/gst/video/video-frame.h
+%{_includedir}/%{gst_mm}/gst/video/video-info.h
+%{_includedir}/%{gst_mm}/gst/video/video-multiview.h
+%{_includedir}/%{gst_mm}/gst/video/video-resampler.h
+%{_includedir}/%{gst_mm}/gst/video/video-scaler.h
+%{_includedir}/%{gst_mm}/gst/video/video-tile.h
+%{_includedir}/%{gst_mm}/gst/video/video.h
+%{_includedir}/%{gst_mm}/gst/video/video-prelude.h
+%{_includedir}/%{gst_mm}/gst/video/videodirection.h
+%{_includedir}/%{gst_mm}/gst/video/videoorientation.h
+%{_includedir}/%{gst_mm}/gst/video/videooverlay.h
 
 %dir %{_datadir}/gst-plugins-base/%{majorminor}/
 %{_datadir}/gst-plugins-base/%{majorminor}/license-translations.dict
