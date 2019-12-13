@@ -14,7 +14,7 @@ Patch6000:      CVE-2019-9928.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
-BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3
+BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3 libxslt
 BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel mesa-libGLES-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel
 
 Requires:       iso-codes
@@ -104,84 +104,12 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %files -f gst-plugins-base-1.0.lang
 %license COPYING
 %{_datadir}/appdata/*.appdata.xml
-%{_libdir}/libgstallocators-%{majorminor}.so.*
-%{_libdir}/libgstaudio-%{majorminor}.so.*
-%{_libdir}/libgstfft-%{majorminor}.so.*
-%{_libdir}/libgstriff-%{majorminor}.so.*
-%{_libdir}/libgsttag-%{majorminor}.so.*
-%{_libdir}/libgstrtp-%{majorminor}.so.*
-%{_libdir}/libgstvideo-%{majorminor}.so.*
-%{_libdir}/libgstpbutils-%{majorminor}.so.*
-%{_libdir}/libgstrtsp-%{majorminor}.so.*
-%{_libdir}/libgstsdp-%{majorminor}.so.*
-%{_libdir}/libgstapp-%{majorminor}.so.*
-%{_libdir}/libgstgl-%{majorminor}.so.*
-
-# gobject-introspection files
-%{_libdir}/girepository-1.0/GstAllocators-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstApp-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstAudio-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstGL-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstPbutils-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstRtp-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstRtsp-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstSdp-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstTag-%{majorminor}.typelib
-%{_libdir}/girepository-1.0/GstVideo-%{majorminor}.typelib
-
-# base plugins without external dependencies
-%{_libdir}/%{gst_mm}/libgstadder.so
-%{_libdir}/%{gst_mm}/libgstapp.so
-%{_libdir}/%{gst_mm}/libgstaudioconvert.so
-%{_libdir}/%{gst_mm}/libgstaudiomixer.so
-%{_libdir}/%{gst_mm}/libgstaudiorate.so
-%{_libdir}/%{gst_mm}/libgstaudioresample.so
-%{_libdir}/%{gst_mm}/libgstaudiotestsrc.so
-%{_libdir}/%{gst_mm}/libgstencoding.so
-%{_libdir}/%{gst_mm}/libgstgio.so
-%{_libdir}/%{gst_mm}/libgstplayback.so
-%{_libdir}/%{gst_mm}/libgstpbtypes.so
-%{_libdir}/%{gst_mm}/libgstrawparse.so
-%{_libdir}/%{gst_mm}/libgstsubparse.so
-%{_libdir}/%{gst_mm}/libgsttcp.so
-%{_libdir}/%{gst_mm}/libgsttypefindfunctions.so
-%{_libdir}/%{gst_mm}/libgstvideoconvert.so
-%{_libdir}/%{gst_mm}/libgstvideorate.so
-%{_libdir}/%{gst_mm}/libgstvideoscale.so
-%{_libdir}/%{gst_mm}/libgstvideotestsrc.so
-%{_libdir}/%{gst_mm}/libgstvolume.so
-
-# base plugins with dependencies
-%{_libdir}/%{gst_mm}/libgstalsa.so
-%{_libdir}/%{gst_mm}/libgstcdparanoia.so
-%{_libdir}/%{gst_mm}/libgstopengl.so
-%{_libdir}/%{gst_mm}/libgstlibvisual.so
-%{_libdir}/%{gst_mm}/libgstogg.so
-%{_libdir}/%{gst_mm}/libgstopus.so
-%{_libdir}/%{gst_mm}/libgstpango.so
-%{_libdir}/%{gst_mm}/libgsttheora.so
-%{_libdir}/%{gst_mm}/libgstvorbis.so
-%{_libdir}/%{gst_mm}/libgstximagesink.so
-%{_libdir}/%{gst_mm}/libgstxvimagesink.so
-
-%{_libdir}/libgstallocators-%{majorminor}.so
-%{_libdir}/libgstaudio-%{majorminor}.so
-%{_libdir}/libgstriff-%{majorminor}.so
-%{_libdir}/libgstrtp-%{majorminor}.so
-%{_libdir}/libgsttag-%{majorminor}.so
-%{_libdir}/libgstvideo-%{majorminor}.so
-%{_libdir}/libgstpbutils-%{majorminor}.so
-%{_libdir}/libgstrtsp-%{majorminor}.so
-%{_libdir}/libgstsdp-%{majorminor}.so
-%{_libdir}/libgstfft-%{majorminor}.so
-%{_libdir}/libgstapp-%{majorminor}.so
-%{_libdir}/libgstgl-%{majorminor}.so
-
+%{_libdir}/libgst*
+%{_libdir}/girepository-1.0/Gst*
+%{_libdir}/%{gst_mm}/libgst*
 
 %files devel
-%{_bindir}/gst-discoverer-%{majorminor}
-%{_bindir}/gst-play-%{majorminor}
-%{_bindir}/gst-device-monitor-%{majorminor}
+%{_bindir}/gst-*
 
 %dir %{_includedir}/%{gst_mm}/gst/allocators
 %{_includedir}/%{gst_mm}/gst/allocators/allocators.h
@@ -323,17 +251,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 
 %dir %{_datadir}/gst-plugins-base/%{majorminor}/
 %{_datadir}/gst-plugins-base/%{majorminor}/license-translations.dict
-
-%{_datadir}/gir-1.0/GstAllocators-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstApp-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstAudio-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstGL-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstPbutils-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstRtp-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstRtsp-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstSdp-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstTag-%{majorminor}.gir
-%{_datadir}/gir-1.0/GstVideo-%{majorminor}.gir
+%{_datadir}/gir-1.0/Gst*.gir
 
 %{_libdir}/pkgconfig/*.pc
 
