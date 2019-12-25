@@ -3,7 +3,7 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.14.4
-Release:         1
+Release:         2
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
@@ -53,7 +53,7 @@ NOCONFIGURE=1 \
 ./autogen.sh
 
 %configure \
-  --with-package-name='GStreamer-plugins-base package' --with-package-origin='http://download.fedoraproject.org' --enable-experimental \
+  --with-package-name='GStreamer-plugins-base package' --enable-experimental \
   --disable-fatal-warnings --disable-silent-rules --enable-gtk-doc --enable-orc
 
 %make_build V=1
@@ -264,5 +264,11 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.14.4-2
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:bugfix about configure
+
 * Mon Sep 16 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.14.4-1
 - Package init
