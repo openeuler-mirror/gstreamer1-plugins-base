@@ -3,7 +3,7 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.14.4
-Release:         2
+Release:         3
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
@@ -14,7 +14,7 @@ Patch6000:      CVE-2019-9928.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
-BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3 libxslt
+BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3 libxslt gdb
 BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel mesa-libGLES-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel
 
 Requires:       iso-codes
@@ -264,6 +264,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Fri Mar 20 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.14.4-3
+- add gdb in buildrequires
+
 * Sat Dec 21 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.14.4-2
 - Type:bugfix
 - ID:NA
