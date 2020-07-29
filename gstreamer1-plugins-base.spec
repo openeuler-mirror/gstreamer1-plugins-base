@@ -2,20 +2,23 @@
 %global         gst_mm          gstreamer-%{majorminor}
 
 Name:            gstreamer1-plugins-base
-Version:         1.14.4
-Release:         3
+Version:         1.16.2
+Release:         1
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
 Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
-Patch6000:      CVE-2019-9928.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
 BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3 libxslt gdb
-BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel mesa-libGLES-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel
+BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel mesa-libGLES-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel egl-wayland-devel
+BuildRequires: pkgconfig(wayland-client) >= 1.0
+BuildRequires: pkgconfig(wayland-cursor) >= 1.0
+BuildRequires: pkgconfig(wayland-egl) >= 9.0
+BuildRequires: pkgconfig(wayland-protocols) >= 1.15
 
 Requires:       iso-codes
 
@@ -28,7 +31,6 @@ GStreamer is a graphics library for built-in media processing components. BasePl
 Summary:        GStreamer Base Plugins Development files
 Requires:       %{name} = %{version}-%{release}
 Provides:       tools
-Obsoletes:      tools
 
 %description devel
 This package contains static libraries and header files.
@@ -38,7 +40,6 @@ Summary:        Developer documentation for GStreamer Base plugins library
 Requires:       %{name} = %{version}-%{release}
 BuildArch:      noarch
 Provides:       devel-docs
-Obsoletes:      devel-docs
 
 %description help
 This package provides manual for developpers.
@@ -46,7 +47,6 @@ This package provides manual for developpers.
 %prep
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
-%patch6000 -p1
 
 %build
 NOCONFIGURE=1 \
@@ -133,6 +133,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/audio/audio-quantize.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-resampler.h
 %{_includedir}/%{gst_mm}/gst/audio/audio.h
+%{_includedir}/%{gst_mm}/gst/audio/audio-buffer.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-prelude.h
 %{_includedir}/%{gst_mm}/gst/audio/gstaudioaggregator.h
 %{_includedir}/%{gst_mm}/gst/audio/gstaudiobasesink.h
@@ -188,6 +189,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtp-enumtypes.h
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtphdrext.h
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtppayloads.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtpmeta.h
 %{_includedir}/%{gst_mm}/gst/rtp/rtp.h
 %{_includedir}/%{gst_mm}/gst/rtp/rtp-prelude.h
 %dir %{_includedir}/%{gst_mm}/gst/rtsp
@@ -227,8 +229,10 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/video/gstvideosink.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideotimecode.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideoutils.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideoaggregator.h
 %{_includedir}/%{gst_mm}/gst/video/navigation.h
 %{_includedir}/%{gst_mm}/gst/video/video-blend.h
+%{_includedir}/%{gst_mm}/gst/video/video-anc.h
 %{_includedir}/%{gst_mm}/gst/video/video-overlay-composition.h
 %{_includedir}/%{gst_mm}/gst/video/video-chroma.h
 %{_includedir}/%{gst_mm}/gst/video/video-color.h
@@ -264,6 +268,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Sat Jul 25 2020 hanhui <hanhui15@huawei.com> - 1.16.2-1
+- update 1.16.2
+
 * Fri Mar 20 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.14.4-3
 - add gdb in buildrequires
 
