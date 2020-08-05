@@ -10,6 +10,7 @@ URL:             http://gstreamer.freedesktop.org/
 Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
+Patch1:         Adapt-to-backwards-incompatible-change-in-GUN.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
@@ -47,6 +48,7 @@ This package provides manual for developpers.
 %prep
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 NOCONFIGURE=1 \
@@ -269,7 +271,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 
 %changelog
 * Wed Aug 05 2020 hanhui <hanhui15@huawei.com> - 1.16.2-2
--change the mesa-libELGS-devel to libglvnd-devel
+-change the mesa-libELGS-devel to libglvnd-devel AND fix make error
 
 * Sat Jul 25 2020 hanhui <hanhui15@huawei.com> - 1.16.2-1
 - update 1.16.2
