@@ -3,18 +3,19 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.16.2
-Release:         1
+Release:         2
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
 Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
+Patch1:         Adapt-to-backwards-incompatible-change-in-GUN.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
 BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3 libxslt gdb
-BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel mesa-libGLES-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel egl-wayland-devel
+BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel libglvnd-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel egl-wayland-devel
 BuildRequires: pkgconfig(wayland-client) >= 1.0
 BuildRequires: pkgconfig(wayland-cursor) >= 1.0
 BuildRequires: pkgconfig(wayland-egl) >= 9.0
@@ -47,6 +48,7 @@ This package provides manual for developpers.
 %prep
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 NOCONFIGURE=1 \
@@ -268,6 +270,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Wed Aug 05 2020 hanhui <hanhui15@huawei.com> - 1.16.2-2
+-change the mesa-libELGS-devel to libglvnd-devel AND fix make error
+
 * Sat Jul 25 2020 hanhui <hanhui15@huawei.com> - 1.16.2-1
 - update 1.16.2
 
