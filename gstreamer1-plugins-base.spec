@@ -2,24 +2,24 @@
 %global         gst_mm          gstreamer-%{majorminor}
 
 Name:            gstreamer1-plugins-base
-Version:         1.16.2
-Release:         2
+Version:         1.18.4
+Release:         1
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
 Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
-Patch1:         Adapt-to-backwards-incompatible-change-in-GUN.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
-BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gtk-doc >= 1.3 libxslt gdb
-BuildRequires:  automake gettext-devel libtool chrpath mesa-libGL-devel libglvnd-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel egl-wayland-devel
-BuildRequires: pkgconfig(wayland-client) >= 1.0
-BuildRequires: pkgconfig(wayland-cursor) >= 1.0
-BuildRequires: pkgconfig(wayland-egl) >= 9.0
-BuildRequires: pkgconfig(wayland-protocols) >= 1.15
+BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gdk-pixbuf2-devel gtk3-devel gtk-doc >= 1.3 libxslt
+BuildRequires:  libjpeg-turbo-devel gcc meson >= 0.48.0 gettext-devel chrpath mesa-libGLES-devel graphene-devel
+BuildRequires:  mesa-libGL-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel egl-wayland-devel
+BuildRequires:  pkgconfig(wayland-client) >= 1.0
+BuildRequires:  pkgconfig(wayland-cursor) >= 1.0
+BuildRequires:  pkgconfig(wayland-egl) >= 9.0
+BuildRequires:  pkgconfig(wayland-protocols) >= 1.15
 
 Requires:       iso-codes
 
@@ -48,20 +48,14 @@ This package provides manual for developpers.
 %prep
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
-%patch1 -p1
 
 %build
-NOCONFIGURE=1 \
-./autogen.sh
-
-%configure \
-  --with-package-name='GStreamer-plugins-base package' --enable-experimental \
-  --disable-fatal-warnings --disable-silent-rules --enable-gtk-doc --enable-orc
-
-%make_build V=1
+%meson -D doc=disabled -D gtk_doc=disabled -D orc=enabled \
+	-D tremor=disabled -D tests=disabled -D examples=disabled
+%meson_build
 
 %install
-%make_install
+%meson_install
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
 cat > $RPM_BUILD_ROOT%{_datadir}/appdata/gstreamer-base.appdata.xml <<EOF
@@ -254,6 +248,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/video/videodirection.h
 %{_includedir}/%{gst_mm}/gst/video/videoorientation.h
 %{_includedir}/%{gst_mm}/gst/video/videooverlay.h
+%{_includedir}/%{gst_mm}/gst/video/video-hdr.h
 
 %dir %{_datadir}/gst-plugins-base/%{majorminor}/
 %{_datadir}/gst-plugins-base/%{majorminor}/license-translations.dict
@@ -263,13 +258,17 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 
 %files help
 %doc AUTHORS README REQUIREMENTS
-%doc %{_datadir}/gtk-doc/html/gst-plugins-base-libs-%{majorminor}
-%doc %{_datadir}/gtk-doc/html/gst-plugins-base-plugins-%{majorminor}
 %{_mandir}/man1/gst-discoverer-*.gz
 %{_mandir}/man1/gst-play-*.gz
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Wed Jun 23 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 1.18.4-1
+- Upgrade to 1.18.4
+- Delete Adapt-to-backwards-incompatible-change-in-GUN.patch whose target
+  patch file doesn't exist in this version 1.18.4
+- Use meson rebuild
+
 * Wed Aug 05 2020 hanhui <hanhui15@huawei.com> - 1.16.2-2
 -change the mesa-libELGS-devel to libglvnd-devel AND fix make error
 
