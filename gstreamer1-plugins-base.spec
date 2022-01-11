@@ -3,7 +3,7 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.18.4
-Release:         2
+Release:         3
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
@@ -11,7 +11,7 @@ Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugi
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
 
-Patch6000:	backport-xclaesse:fix-meson-0-58.patch
+Patch6000:	backport-xclaesse-fix-meson-0-58.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
@@ -266,6 +266,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Tue Jan 11 2022 wuchaochao <wuchaochao4@huawei.com> - 1.18.4-3
+- change patch name 
+
 * Mon Jan 10 2022 wuchaochao <wuchaochao4@huawei.com> - 1.18.4-2 
 - fix build when Meson >= 0.58.0
 
