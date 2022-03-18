@@ -3,7 +3,7 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.16.2
-Release:         1
+Release:         2
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
@@ -11,6 +11,8 @@ Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugi
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
 Patch1:         Adapt-to-backwards-incompatible-change-in-GUN.patch
+
+Patch6000:      backport-CVE-2021-3522.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
@@ -49,6 +51,7 @@ This package provides manual for developpers.
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch6000 -p1
 
 %build
 NOCONFIGURE=1 \
@@ -270,6 +273,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Fri Mar 18 2022 dongyuzhen <dongyuzhen@h-partners.com> - 1.16.2-2
+- fix CVE-2021-3522
+
 * Tue Aug 18 2020 zhanzhimin <zhanzhimin@huawei.com> - 1.16.2-1
 - update to 1.16.2
 
