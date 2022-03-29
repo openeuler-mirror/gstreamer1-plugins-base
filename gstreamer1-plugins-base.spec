@@ -2,8 +2,8 @@
 %global         gst_mm          gstreamer-%{majorminor}
 
 Name:            gstreamer1-plugins-base
-Version:         1.18.4
-Release:         2
+Version:         1.19.3
+Release:         1
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
@@ -11,12 +11,10 @@ Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugi
 
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
 
-Patch6000:	backport-xclaesse-fix-meson-0-58.patch
-
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
 BuildRequires:  orc-devel >= 0.4.18 pango-devel pkgconfig opus-devel gdk-pixbuf2-devel gtk3-devel gtk-doc >= 1.3 libxslt
-BuildRequires:  libjpeg-turbo-devel gcc meson >= 0.48.0 gettext-devel chrpath mesa-libGLES-devel graphene-devel
+BuildRequires:  libjpeg-turbo-devel gcc meson >= 0.48.0 chrpath mesa-libGLES-devel graphene-devel
 BuildRequires:  mesa-libGL-devel mesa-libGLU-devel mesa-libEGL-devel wayland-devel egl-wayland-devel
 BuildRequires:  pkgconfig(wayland-client) >= 1.0
 BuildRequires:  pkgconfig(wayland-cursor) >= 1.0
@@ -30,10 +28,20 @@ Conflicts: gstreamer1-plugins-bad-free < 1.13
 %description
 GStreamer is a graphics library for built-in media processing components. BasePlug-ins is a the collections used to maintain the GStreamer plugin.
 
+%package tools
+Summary:        Tools for GStreamer streaming media framework base plugins
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description tools
+GStreamer is a graphics library for built-in media processing components. BasePlug-ins is a the collections used to maintain the GStreamer plugin.
+This package contains the command-line tools for the base plugins.
+These include:
+
+* gst-discoverer
+
 %package devel
 Summary:        GStreamer Base Plugins Development files
 Requires:       %{name} = %{version}-%{release}
-Provides:       tools
 
 %description devel
 This package contains static libraries and header files.
@@ -50,7 +58,6 @@ This package provides manual for developpers.
 %prep
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
-%patch6000 -p1
 
 %build
 %meson -D doc=disabled -D gtk_doc=disabled -D orc=enabled \
@@ -100,15 +107,90 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 
 %ldconfig_scriptlets
 
-%files -f gst-plugins-base-1.0.lang
-%license COPYING
-%{_datadir}/appdata/*.appdata.xml
-%{_libdir}/libgst*
-%{_libdir}/girepository-1.0/Gst*
-%{_libdir}/%{gst_mm}/libgst*
+# rework for sanity
+# Referring to https://src.fedoraproject.org/rpms/gstreamer1-plugins-base/blob/b009392f133b411815f38c59509b7b33fb0b5109/f/gstreamer1-plugins-base.spec by Wim Taymans 
 
+%files -f gst-plugins-base-%{majorminor}.lang
+%license COPYING
+%doc AUTHORS README REQUIREMENTS
+%{_datadir}/appdata/*.appdata.xml
+%{_libdir}/libgstallocators-%{majorminor}.so.*
+%{_libdir}/libgstaudio-%{majorminor}.so.*
+%{_libdir}/libgstfft-%{majorminor}.so.*
+%{_libdir}/libgstriff-%{majorminor}.so.*
+%{_libdir}/libgsttag-%{majorminor}.so.*
+%{_libdir}/libgstrtp-%{majorminor}.so.*
+%{_libdir}/libgstvideo-%{majorminor}.so.*
+%{_libdir}/libgstpbutils-%{majorminor}.so.*
+%{_libdir}/libgstrtsp-%{majorminor}.so.*
+%{_libdir}/libgstsdp-%{majorminor}.so.*
+%{_libdir}/libgstapp-%{majorminor}.so.*
+%{_libdir}/libgstgl-%{majorminor}.so.*
+
+# gobject-introspection files
+%{_libdir}/girepository-1.0/GstAllocators-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstApp-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstAudio-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstGL-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstPbutils-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstRtp-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstRtsp-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstSdp-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstTag-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstVideo-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstGLEGL-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstGLWayland-%{majorminor}.typelib
+%{_libdir}/girepository-1.0/GstGLX11-%{majorminor}.typelib
+
+# base plugins without external dependencies
+%{_libdir}/%{gst_mm}/libgstadder.so
+%{_libdir}/%{gst_mm}/libgstapp.so
+%{_libdir}/%{gst_mm}/libgstaudioconvert.so
+%{_libdir}/%{gst_mm}/libgstaudiomixer.so
+%{_libdir}/%{gst_mm}/libgstaudiorate.so
+%{_libdir}/%{gst_mm}/libgstaudioresample.so
+%{_libdir}/%{gst_mm}/libgstaudiotestsrc.so
+%{_libdir}/%{gst_mm}/libgstcompositor.so
+%{_libdir}/%{gst_mm}/libgstencoding.so
+%{_libdir}/%{gst_mm}/libgstgio.so
+%{_libdir}/%{gst_mm}/libgstoverlaycomposition.so
+%{_libdir}/%{gst_mm}/libgstplayback.so
+%{_libdir}/%{gst_mm}/libgstpbtypes.so
+%{_libdir}/%{gst_mm}/libgstrawparse.so
+%{_libdir}/%{gst_mm}/libgstsubparse.so
+%{_libdir}/%{gst_mm}/libgsttcp.so
+%{_libdir}/%{gst_mm}/libgsttypefindfunctions.so
+%{_libdir}/%{gst_mm}/libgstvideoconvert.so
+%{_libdir}/%{gst_mm}/libgstvideorate.so
+%{_libdir}/%{gst_mm}/libgstvideoscale.so
+%{_libdir}/%{gst_mm}/libgstvideotestsrc.so
+%{_libdir}/%{gst_mm}/libgstvolume.so
+
+# base plugins with dependencies
+%{_libdir}/%{gst_mm}/libgstalsa.so
+%{_libdir}/%{gst_mm}/libgstcdparanoia.so
+%{_libdir}/%{gst_mm}/libgstopengl.so
+%{_libdir}/%{gst_mm}/libgstlibvisual.so
+%{_libdir}/%{gst_mm}/libgstogg.so
+%{_libdir}/%{gst_mm}/libgstopus.so
+%{_libdir}/%{gst_mm}/libgstpango.so
+%{_libdir}/%{gst_mm}/libgsttheora.so
+%{_libdir}/%{gst_mm}/libgstvorbis.so
+%{_libdir}/%{gst_mm}/libgstximagesink.so
+%{_libdir}/%{gst_mm}/libgstxvimagesink.so
+
+
+%files tools
+%{_bindir}/gst-discoverer-%{majorminor}
+%{_bindir}/gst-play-%{majorminor}
+%{_bindir}/gst-device-monitor-%{majorminor}
+%{_mandir}/man1/gst-discoverer-*.gz
+%{_mandir}/man1/gst-play-*.gz
+%{_mandir}/man1/gst-device-monitor-*.gz
 %files devel
+%if 0
 %{_bindir}/gst-*
+%endif
 
 %dir %{_includedir}/%{gst_mm}/gst/allocators
 %{_includedir}/%{gst_mm}/gst/allocators/allocators.h
@@ -123,6 +205,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/app/gstappsink.h
 %{_includedir}/%{gst_mm}/gst/app/gstappsrc.h
 %dir %{_includedir}/%{gst_mm}/gst/audio
+%{_includedir}/%{gst_mm}/gst/audio/audio-buffer.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-channels.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-channel-mixer.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-converter.h
@@ -132,7 +215,6 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/audio/audio-quantize.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-resampler.h
 %{_includedir}/%{gst_mm}/gst/audio/audio.h
-%{_includedir}/%{gst_mm}/gst/audio/audio-buffer.h
 %{_includedir}/%{gst_mm}/gst/audio/audio-prelude.h
 %{_includedir}/%{gst_mm}/gst/audio/gstaudioaggregator.h
 %{_includedir}/%{gst_mm}/gst/audio/gstaudiobasesink.h
@@ -187,8 +269,8 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtpdefs.h
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtp-enumtypes.h
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtphdrext.h
-%{_includedir}/%{gst_mm}/gst/rtp/gstrtppayloads.h
 %{_includedir}/%{gst_mm}/gst/rtp/gstrtpmeta.h
+%{_includedir}/%{gst_mm}/gst/rtp/gstrtppayloads.h
 %{_includedir}/%{gst_mm}/gst/rtp/rtp.h
 %{_includedir}/%{gst_mm}/gst/rtp/rtp-prelude.h
 %dir %{_includedir}/%{gst_mm}/gst/rtsp
@@ -220,6 +302,8 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/video/colorbalance.h
 %{_includedir}/%{gst_mm}/gst/video/colorbalancechannel.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideoaffinetransformationmeta.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideoaggregator.h
+%{_includedir}/%{gst_mm}/gst/video/gstvideocodecalphameta.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideodecoder.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideoencoder.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideofilter.h
@@ -228,10 +312,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/video/gstvideosink.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideotimecode.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideoutils.h
-%{_includedir}/%{gst_mm}/gst/video/gstvideoaggregator.h
 %{_includedir}/%{gst_mm}/gst/video/navigation.h
-%{_includedir}/%{gst_mm}/gst/video/video-blend.h
 %{_includedir}/%{gst_mm}/gst/video/video-anc.h
+%{_includedir}/%{gst_mm}/gst/video/video-blend.h
 %{_includedir}/%{gst_mm}/gst/video/video-overlay-composition.h
 %{_includedir}/%{gst_mm}/gst/video/video-chroma.h
 %{_includedir}/%{gst_mm}/gst/video/video-color.h
@@ -241,6 +324,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/video/video-event.h
 %{_includedir}/%{gst_mm}/gst/video/video-format.h
 %{_includedir}/%{gst_mm}/gst/video/video-frame.h
+%{_includedir}/%{gst_mm}/gst/video/video-hdr.h
 %{_includedir}/%{gst_mm}/gst/video/video-info.h
 %{_includedir}/%{gst_mm}/gst/video/video-multiview.h
 %{_includedir}/%{gst_mm}/gst/video/video-resampler.h
@@ -251,21 +335,43 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/video/videodirection.h
 %{_includedir}/%{gst_mm}/gst/video/videoorientation.h
 %{_includedir}/%{gst_mm}/gst/video/videooverlay.h
-%{_includedir}/%{gst_mm}/gst/video/video-hdr.h
 
+%{_libdir}/libgstallocators-%{majorminor}.so
+%{_libdir}/libgstaudio-%{majorminor}.so
+%{_libdir}/libgstriff-%{majorminor}.so
+%{_libdir}/libgstrtp-%{majorminor}.so
+%{_libdir}/libgsttag-%{majorminor}.so
+%{_libdir}/libgstvideo-%{majorminor}.so
+%{_libdir}/libgstpbutils-%{majorminor}.so
+%{_libdir}/libgstrtsp-%{majorminor}.so
+%{_libdir}/libgstsdp-%{majorminor}.so
+%{_libdir}/libgstfft-%{majorminor}.so
+%{_libdir}/libgstapp-%{majorminor}.so
+%{_libdir}/libgstgl-%{majorminor}.so
 %dir %{_datadir}/gst-plugins-base/%{majorminor}/
 %{_datadir}/gst-plugins-base/%{majorminor}/license-translations.dict
-%{_datadir}/gir-1.0/Gst*.gir
+%{_datadir}/gir-1.0/GstAllocators-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstApp-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstAudio-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstGL-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstPbutils-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstRtp-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstRtsp-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstSdp-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstTag-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstVideo-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstGLEGL-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstGLWayland-%{majorminor}.gir
+%{_datadir}/gir-1.0/GstGLX11-%{majorminor}.gir
 
 %{_libdir}/pkgconfig/*.pc
 
-%files help
-%doc AUTHORS README REQUIREMENTS
-%{_mandir}/man1/gst-discoverer-*.gz
-%{_mandir}/man1/gst-play-*.gz
-%{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Tue Mar 29 2022 Jiacheng Zhou <jchzhou@outlook.com> - 1.19.3-1
+- Upgrade to 1.19.3 (to match mainline gstreamer version)
+- Tidy up for sanity
+
 * Tue Jan 11 2022 wuchaochao <wuchaochao4@huawei.com> - 1.18.4-2
 - fix build when Meson >= 0.58.0 
 
