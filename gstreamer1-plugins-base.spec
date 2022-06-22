@@ -3,14 +3,12 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.18.4
-Release:         2
+Release:         3
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
 Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz
-
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
-
 Patch6000:	backport-xclaesse-fix-meson-0-58.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
@@ -53,7 +51,7 @@ This package provides manual for developpers.
 %patch6000 -p1
 
 %build
-%meson -D doc=disabled -D gtk_doc=disabled -D orc=enabled \
+%meson -D doc=disabled -D orc=enabled \
 	-D tremor=disabled -D tests=disabled -D examples=disabled
 %meson_build
 
@@ -266,6 +264,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Mon Jun 20 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 1.18.4-3
+- remove meson option gtk_doc
+
 * Tue Jan 11 2022 wuchaochao <wuchaochao4@huawei.com> - 1.18.4-2
 - fix build when Meson >= 0.58.0 
 
