@@ -3,7 +3,7 @@
 
 Name:            gstreamer1-plugins-base
 Version:         1.20.3
-Release:         1
+Release:         2
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
@@ -30,7 +30,7 @@ GStreamer is a graphics library for built-in media processing components. BasePl
 %package devel
 Summary:        GStreamer Base Plugins Development files
 Requires:       %{name} = %{version}-%{release}
-Requires:       gstreamer1-devel>= %{version}-%{release}
+Requires:       gstreamer1-devel >= %{version}-%{release}
 Provides:       tools
 
 %description devel
@@ -263,6 +263,9 @@ EOF
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Sat Jun 25 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 1.20.3-2
+-  Fix devel package Requires gstreamer1-devel
+
 * Sat Jun 25 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 1.20.3-1
 - update to 1.20.3
 
