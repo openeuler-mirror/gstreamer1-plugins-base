@@ -2,14 +2,13 @@
 %global         gst_mm          gstreamer-%{majorminor}
 
 Name:            gstreamer1-plugins-base
-Version:         1.18.4
-Release:         3
+Version:         1.20.3
+Release:         1
 Summary:         GStreamer streaming media framework base plugins
 License:         LGPLv2+
 URL:             http://gstreamer.freedesktop.org/
 Source0:         http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-%{version}.tar.xz
 Patch0:         0001-missing-plugins-Remove-the-mpegaudioversion-field.patch
-Patch6000:	backport-xclaesse-fix-meson-0-58.patch
 
 BuildRequires:  gcc-c++ gstreamer1-devel >= %{version} gobject-introspection-devel >= 1.31.1 iso-codes-devel alsa-lib-devel
 BuildRequires:  cdparanoia-devel libogg-devel >= 1.0 libtheora-devel >= 1.1 libvisual-devel libvorbis-devel >= 1.0 libXv-devel
@@ -31,6 +30,7 @@ GStreamer is a graphics library for built-in media processing components. BasePl
 %package devel
 Summary:        GStreamer Base Plugins Development files
 Requires:       %{name} = %{version}-%{release}
+Requires:       gstreamer1-devel>= %{version}-%{release}
 Provides:       tools
 
 %description devel
@@ -48,7 +48,6 @@ This package provides manual for developpers.
 %prep
 %setup -q -n gst-plugins-base-%{version}
 %patch0 -p1
-%patch6000 -p1
 
 %build
 %meson -D doc=disabled -D orc=enabled \
@@ -93,8 +92,7 @@ cat > $RPM_BUILD_ROOT%{_datadir}/appdata/gstreamer-base.appdata.xml <<EOF
 EOF
 
 %find_lang gst-plugins-base-%{majorminor}
-
-find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
+%delete_la
 
 %ldconfig_scriptlets
 
@@ -215,6 +213,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_includedir}/%{gst_mm}/gst/tag/tag-enumtypes.h
 %{_includedir}/%{gst_mm}/gst/tag/xmpwriter.h
 %dir %{_includedir}/%{gst_mm}/gst/video
+%{_includedir}/%{gst_mm}/gst/video/gstvideocodecalphameta.h
 %{_includedir}/%{gst_mm}/gst/video/colorbalance.h
 %{_includedir}/%{gst_mm}/gst/video/colorbalancechannel.h
 %{_includedir}/%{gst_mm}/gst/video/gstvideoaffinetransformationmeta.h
@@ -258,12 +257,15 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -fv {} ';'
 %{_libdir}/pkgconfig/*.pc
 
 %files help
-%doc AUTHORS README REQUIREMENTS
+%doc AUTHORS README.md REQUIREMENTS
 %{_mandir}/man1/gst-discoverer-*.gz
 %{_mandir}/man1/gst-play-*.gz
 %{_mandir}/man1/gst-device-monitor-*.gz
 
 %changelog
+* Sat Jun 25 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 1.20.3-1
+- update to 1.20.3
+
 * Mon Jun 20 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 1.18.4-3
 - remove meson option gtk_doc
 
